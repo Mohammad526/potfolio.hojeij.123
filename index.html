@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mohammad Hojeij – Ingénieur électronique et embarqué</title>
+<meta name="description" content="Portfolio de Mohammad Hojeij, ingénieur en électronique et systèmes embarqués : acquisition de signaux, FPGA, IA embarquée, C/C++.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF0F3;
+  --panel:#FFFFFF;
+  --ink:#13202B;
+  --muted:#4D5C69;
+  --line:#CBD3DA;
+  --trace:#0B6E8A;
+  --accent:#C7791A;
+  --accent-ink:#FFFFFF;
+  --grid:rgba(19,32,43,.07);
+  --focus:#0B6E8A;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1A22;
+    --panel:#16242F;
+    --ink:#E6ECF1;
+    --muted:#9FB0BD;
+    --line:#2A3A47;
+    --trace:#5CC3DE;
+    --accent:#E8A24A;
+    --accent-ink:#0F1A22;
+    --grid:rgba(230,236,241,.07);
+    --focus:#5CC3DE;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1A22;--panel:#16242F;--ink:#E6ECF1;--muted:#9FB0BD;--line:#2A3A47;
+  --trace:#5CC3DE;--accent:#E8A24A;--accent-ink:#0F1A22;--grid:rgba(230,236,241,.07);--focus:#5CC3DE;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:"Bricolage Grotesque","Public Sans",system-ui,sans-serif;line-height:1.12;margin:0;letter-spacing:-.01em}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* Navigation */
+header.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px}
+.brand{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;text-decoration:none;font-size:1.05rem}
+nav ul{list-style:none;display:flex;gap:4px;margin:0;padding:0;flex-wrap:wrap}
+nav a{display:inline-block;padding:8px 12px;text-decoration:none;color:var(--muted);font-weight:500;font-size:.95rem;border-radius:8px}
+nav a:hover{color:var(--ink);background:var(--panel)}
+
+/* Hero */
+.hero{padding:56px 0 40px}
+.hero h1{font-size:clamp(2.6rem,7.5vw,5rem);font-weight:700;max-width:14ch}
+.hero .role{font-size:clamp(1.15rem,2.4vw,1.5rem);max-width:34ch;margin:18px 0 0;color:var(--ink);font-weight:500;line-height:1.35}
+.hero .avail{margin:14px 0 0;color:var(--muted);max-width:56ch}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:600;text-decoration:none;border:2px solid var(--ink);color:var(--ink);font-size:1rem}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary:hover{filter:brightness(1.06)}
+
+/* Signal scope: l'élément mémorable */
+.scope{margin-top:40px;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.scope canvas{display:block;width:100%;height:220px}
+.scope .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px 18px;border-top:1px solid var(--line)}
+.scope label{font-weight:600;font-size:.95rem}
+.scope input[type=range]{width:100%;accent-color:var(--accent);height:32px}
+.scope .end{color:var(--muted);font-size:.9rem;white-space:nowrap}
+.scope .note{padding:0 18px 16px;margin:0;color:var(--muted);font-size:.92rem;max-width:80ch}
+
+/* Sections */
+section{padding:56px 0 8px}
+section>.wrap>h2{font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.lead{color:var(--muted);max-width:62ch;margin:0 0 28px}
+
+/* Projets */
+.proj{display:grid;grid-template-columns:150px 1fr;gap:8px 28px;padding:26px 0;border-top:1px solid var(--line)}
+.proj:first-of-type{border-top:2px solid var(--ink)}
+.proj .when{color:var(--muted);font-size:.92rem;font-weight:500}
+.proj .when strong{display:block;color:var(--ink);font-weight:600}
+.proj h3{font-size:1.4rem;margin-bottom:6px}
+.proj.feature h3{font-size:1.8rem}
+.proj p{margin:0 0 10px;max-width:68ch}
+.tags{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.tags li{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:3px 11px;font-size:.85rem;color:var(--muted)}
+details{margin:6px 0 0;max-width:68ch}
+summary{cursor:pointer;font-weight:600;color:var(--trace);padding:4px 0;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";display:inline-block;width:1.2em;font-weight:700}
+details[open] summary::before{content:"–"}
+details ul{margin:6px 0 0;padding-left:1.2em}
+details li{margin:4px 0}
+
+/* Compétences */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:0 36px}
+.skills div{padding:18px 0;border-top:1px solid var(--line)}
+.skills dt{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:4px}
+.skills dd{margin:0;color:var(--muted)}
+.soft{margin-top:22px;color:var(--muted);max-width:70ch}
+
+/* Parcours: c'est une vraie chronologie */
+.timeline{list-style:none;margin:0;padding:0 0 0 22px;border-left:2px solid var(--line)}
+.timeline li{position:relative;padding:0 0 26px 8px}
+.timeline li::before{content:"";position:absolute;left:-31px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:3px solid var(--trace)}
+.timeline .d{color:var(--muted);font-size:.92rem;font-weight:500}
+.timeline h3{font-size:1.15rem;margin:2px 0 2px}
+.timeline p{margin:0;max-width:64ch;color:var(--muted)}
+
+/* Contact */
+.contact{padding-bottom:64px}
+.contact .box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px}
+.contact h2{margin-bottom:10px}
+.contact p{margin:0 0 18px;max-width:58ch;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:.9rem}
+
+@media (max-width:720px){
+  body{font-size:16px}
+  .proj{grid-template-columns:1fr}
+  .scope .ctrl{grid-template-columns:1fr;gap:6px}
+  .scope .end{display:none}
+  .brand{white-space:nowrap;font-size:1rem}
+  header.top .wrap{flex-wrap:wrap;padding-top:6px;padding-bottom:6px;gap:0 12px}
+  nav a{padding:6px 8px;font-size:.88rem}
+  .hero{padding-top:36px}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .btn:hover{transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">Mohammad Hojeij</a>
+    <nav aria-label="Navigation principale">
+      <ul>
+        <li><a href="#projets">Projets</a></li>
+        <li><a href="#competences">Compétences</a></li>
+        <li><a href="#parcours">Parcours</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<div class="wrap hero">
+  <h1>Mohammad Hojeij</h1>
+  <p class="role">Ingénieur en électronique et systèmes embarqués. J'acquiers des signaux, je les traite et je fais tourner l'IA sur du matériel embarqué.</p>
+  <p class="avail">Jeune diplômé de Polytech Paris-Saclay (double diplôme ingénieur et Master Électrique et Télécommunication). Je cherche un premier poste en CDI, partout en France.</p>
+  <div class="cta">
+    <a class="btn primary" href="CV_Hojeij.pdf">Télécharger mon CV</a>
+    <a class="btn" href="mailto:mhmdhjeij9@gmail.com">Écrire un e-mail</a>
+  </div>
+
+  <div class="scope">
+    <canvas id="scope" role="img" aria-label="Illustration : un signal bruité qui devient net quand on déplace le curseur vers Débruité."></canvas>
+    <div class="ctrl">
+      <label for="denoise">Signal</label>
+      <input id="denoise" type="range" min="0" max="100" value="0" aria-describedby="scope-note">
+      <span class="end">Brut → Débruité</span>
+    </div>
+    <p class="note" id="scope-note">Illustration. Sur les images de microscopie de mon stage, une faible intensité laser préserve les cellules mais donne un signal bruité. J'ai adapté un modèle GAN pour restaurer l'image. Déplace le curseur pour voir l'effet.</p>
+  </div>
+</div>
+
+<section id="projets">
+  <div class="wrap">
+    <h2>Projets</h2>
+    <p class="lead">Du stage de fin d'études aux projets d'école : acquisition, FPGA, temps réel, IA embarquée et applications connectées.</p>
+
+    <article class="proj feature">
+      <div class="when"><strong>Mars à sept. 2026</strong>Stage de fin d'études, IBDM-CNRS / Aix-Marseille Université</div>
+      <div>
+        <h3>Microscopie intelligente : acquisition d'images et débruitage par IA</h3>
+        <p>Mise en place d'une chaîne d'acquisition d'images en microscopie confocale et ajustement fin du modèle μPiX (architecture GAN) pour débruiter des images prises à faible intensité laser, afin de limiter les dommages causés aux cellules.</p>
+        <details>
+          <summary>Missions et résultats</summary>
+          <ul>
+            <li>Programme d'automatisation de l'acquisition et de la communication.</li>
+            <li>Architecture client-serveur TCP/IP entre le logiciel de microscopie et une station de traitement GPU, avec conversion des fichiers et prédictions automatisées.</li>
+            <li>Optimisation de l'inférence sur GPU (modèle gardé en mémoire) pour réduire le temps entre deux acquisitions.</li>
+            <li>3 modèles GAN entraînés et validés, un par canal de fluorescence, avec validation multi-métriques (SSIM, MSE, SNR).</li>
+            <li>Seuils d'intensité laser exploitables déterminés expérimentalement et validés avec des experts biologistes.</li>
+            <li>Protocole de bout en bout testé et validé en local avant déploiement sur l'application réelle.</li>
+          </ul>
+        </details>
+        <ul class="tags"><li>Python</li><li>GAN</li><li>TCP/IP</li><li>GPU</li><li>ZEISS CD7 / LSM</li><li>ZEN API</li></ul>
+      </div>
+    </article>
+
+    <article class="proj">
+      <div class="when"><strong>Oct. 2025 à fév. 2026</strong>Polytech Paris-Saclay</div>
+      <div>
+        <h3>Détection de pose humaine en temps réel sur Jetson Orin</h3>
+        <p>Comparaison de trois modèles (YOLOv11-Pose, MoveNet, OpenPose), puis portage du prototype Python vers C++17 avec conversion ONNX et moteurs TensorRT pour une détection en temps réel sur NVIDIA Jetson Orin.</p>
+        <details>
+          <summary>Missions et résultats</summary>
+          <ul>
+            <li>Axes d'optimisation testés : résolution d'entrée, précision numérique (FP32/FP16), taille du modèle, nombre de personnes.</li>
+            <li>Trois pipelines GPU en C++ : conversion ONNX vers TensorRT, inférence sur image fixe, inférence temps réel sur flux vidéo ou caméra.</li>
+            <li>YOLOv11-Pose retenu comme le plus performant et le plus robuste, avec des configurations optimales selon le cas d'usage (précision maximale ou débit).</li>
+          </ul>
+        </details>
+        <ul class="tags"><li>C++17</li><li>Python</li><li>ONNX</li><li>TensorRT</li><li>CUDA</li><li>OpenCV</li><li>Jetson Orin</li></ul>
+      </div>
+    </article>
+
+    <article class="proj">
+      <div class="when"><strong>Déc. 2025 à fév. 2026</strong>Polytech Paris-Saclay</div>
+      <div>
+        <h3>SoC robot sur FPGA avec processeur Nios II</h3>
+        <p>Conception complète d'un système sur puce pour piloter un robot mobile avec moteurs et capteurs infrarouges : IP en VHDL, intégration sous Platform Designer et programmes de test en C.</p>
+        <details>
+          <summary>Missions et résultats</summary>
+          <ul>
+            <li>IP personnalisées sur bus Avalon-MM : PWM pour deux moteurs DC, acquisition et seuillage d'un capteur infrarouge (ADC), registre de commande des LED.</li>
+            <li>Intégration Nios II, SDRAM, JTAG UART, timer et IP, avec adresses mémoire et interruptions.</li>
+            <li>Sécurité matérielle à double condition (registre logiciel et interrupteur physique) pour empêcher tout démarrage intempestif des moteurs.</li>
+            <li>Robot réel piloté : vitesse, sens, lecture des capteurs, retour visuel par LED.</li>
+          </ul>
+        </details>
+        <ul class="tags"><li>VHDL</li><li>Nios II</li><li>Quartus</li><li>Qsys</li><li>C embarqué</li><li>ADC LTC2308</li></ul>
+      </div>
+    </article>
+
+    <article class="proj">
+      <div class="when"><strong>Juin 2025 à fév. 2026</strong>Télécom Paris, équipe ACES (stage puis CDD)</div>
+      <div>
+        <h3>Extension OSATE-DIM pour la transformation de modèles AADL</h3>
+        <p>Contribution à l'outil RAMSES, qui génère du code pour des systèmes basés sur ROS. J'ai analysé le code hérité en Xtend, corrigé 3 bugs de désinstanciation et mis en place un test automatisé qui compare le modèle avant et après.</p>
+        <details>
+          <summary>Missions et résultats</summary>
+          <ul>
+            <li>Méthode : observer le défaut, analyser le code, déboguer pas à pas, isoler la portion fautive, corriger, valider par tests.</li>
+            <li>Bug 1 : mauvaise typification des data et des bus quand un nom d'implémentation contenait un point.</li>
+            <li>Bug 2 : éléments data mal générés lors de la désinstanciation.</li>
+            <li>Bug 3 : connexions générées en double.</li>
+            <li>Suivi du code sur GitLab (branches, issues, documentation) et collaboration avec l'équipe de recherche.</li>
+          </ul>
+        </details>
+        <ul class="tags"><li>Java</li><li>Xtend</li><li>EMF</li><li>Eclipse PDE</li><li>AADL / OSATE</li><li>ROS</li><li>GitLab</li></ul>
+      </div>
+    </article>
+
+    <article class="proj">
+      <div class="when"><strong>Oct. à nov. 2025</strong>Polytech Paris-Saclay</div>
+      <div>
+        <h3>Acquisition temps réel d'un accéléromètre USB, en client-serveur</h3>
+        <p>Application MFC pour acquérir et afficher en temps réel les trois axes d'un accéléromètre, et serveur Qt qui diffuse les mesures à jusqu'à 50 clients connectés en même temps.</p>
+        <details>
+          <summary>Missions et résultats</summary>
+          <ul>
+            <li>Gestion dynamique des capteurs USB et arrêt automatique en cas de déconnexion.</li>
+            <li>Affichage des trois courbes rafraîchi toutes les 100 ms, zoom vertical de 1:1 à 1:8, mode plein écran avec trajectoire.</li>
+            <li>Sauvegarde et relecture des mesures dans un format binaire propre au projet.</li>
+            <li>Serveur Qt qui diffuse des paquets de 6 octets, 5 fois par seconde. Testé avec 3 à 4 clients simultanés.</li>
+          </ul>
+        </details>
+        <ul class="tags"><li>C++</li><li>MFC</li><li>Qt</li><li>Réseau client-serveur</li><li>Capteur USB</li></ul>
+      </div>
+    </article>
+
+    <article class="proj">
+      <div class="when"><strong>Nov. à déc. 2025</strong>Polytech Paris-Saclay, en binôme</div>
+      <div>
+        <h3>Application Android BLE de suivi de composition corporelle</h3>
+        <p>Application qui se connecte à une balance connectée via le service Body Composition (0x181B) du Bluetooth SIG, décode les trames et affiche les mesures en temps réel.</p>
+        <details>
+          <summary>Missions et résultats</summary>
+          <ul>
+            <li>Scan BLE filtré par UUID, connexion GATT et notifications sur la caractéristique 0x2A9C.</li>
+            <li>Parseur de trames avec gestion des flags : masse grasse, hydrique, musculaire, osseuse, IMC, métabolisme basal.</li>
+            <li>Jauge semi-circulaire dessinée sur Canvas, avec code couleur selon les seuils de l'OMS.</li>
+            <li>Permissions Bluetooth gérées selon les versions d'Android et cycle de vie de la connexion GATT.</li>
+          </ul>
+        </details>
+        <ul class="tags"><li>Java</li><li>Android SDK</li><li>BLE / GATT</li><li>Android Studio</li></ul>
+      </div>
+    </article>
+
+    <article class="proj">
+      <div class="when"><strong>Déc. 2025 à jan. 2026</strong>Polytech Paris-Saclay, en binôme</div>
+      <div>
+        <h3>Horloge mondiale avec affichage déporté sous FreeRTOS</h3>
+        <p>Système d'horloge sur carte Nios II (DE1) avec 10 fuseaux horaires, relié à une carte STM32 par SPI, à un capteur de température LM75A par I2C et à des modules d'affichage par bus CAN.</p>
+        <details>
+          <summary>Missions et résultats</summary>
+          <ul>
+            <li>Tâche périodique FreeRTOS qui rafraîchit l'heure chaque seconde, avec ordonnancement préemptif et allocation statique de la mémoire.</li>
+            <li>Liaisons SPI et I2C opérationnelles, première communication CAN entre le Nios II et la STM32.</li>
+          </ul>
+        </details>
+        <ul class="tags"><li>FreeRTOS</li><li>Nios II</li><li>STM32</li><li>CAN</li><li>SPI</li><li>I2C</li></ul>
+      </div>
+    </article>
+
+    <article class="proj">
+      <div class="when"><strong>Oct. à déc. 2025</strong>Polytech Paris-Saclay</div>
+      <div>
+        <h3>Racine carrée sur FPGA : logiciel contre matériel</h3>
+        <p>Algorithme de Newton en C, puis plusieurs implémentations en VHDL sous Quartus pour réduire le temps de calcul. L'écart observé entre le matériel et le logiciel est important. J'ai aussi proposé une méthode qui limite le coût de la division.</p>
+        <ul class="tags"><li>C</li><li>VHDL</li><li>Quartus</li><li>FPGA</li></ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="competences">
+  <div class="wrap">
+    <h2>Compétences</h2>
+    <p class="lead">Ce que j'utilise réellement dans mes projets.</p>
+    <dl class="skills">
+      <div><dt>Systèmes embarqués et temps réel</dt><dd>C et C++ (ARM, STM32, ESP32), FreeRTOS, bus CAN, SPI, I2C, BLE/GATT, microcontrôleurs PIC18F et 8051/8052, assembleur.</dd></div>
+      <div><dt>FPGA</dt><dd>VHDL, Nios II, Qsys / Platform Designer, Quartus, bus Avalon-MM.</dd></div>
+      <div><dt>IA et vision</dt><dd>Python (PyTorch, TensorFlow, OpenCV), GAN, CNN, ONNX, TensorRT, CUDA, NVIDIA Jetson Orin.</dd></div>
+      <div><dt>Instrumentation et acquisition</dt><dd>Chaînes d'acquisition et de mesure, capteurs et câblage, traitement du signal et des images, microscopie ZEISS (LSM, ZEN Blue, ZEN API, IronPython).</dd></div>
+      <div><dt>Logiciel</dt><dd>C++17, Qt, MFC, Java et Xtend, C#, MATLAB / Simulink, Android Studio, architectures client-serveur TCP/IP.</dd></div>
+      <div><dt>Outils et méthodes</dt><dd>Git et GitLab, Eclipse / OSATE, EMF, Visual Studio, VS Code, tests automatisés de non-régression, débogage pas à pas.</dd></div>
+      <div><dt>Langues</dt><dd>Français courant. Anglais : TOEIC 870/990.</dd></div>
+    </dl>
+    <p class="soft">Côté travail : esprit d'analyse, rigueur, autonomie, pédagogie et goût pour l'apprentissage en continu.</p>
+  </div>
+</section>
+
+<section id="parcours">
+  <div class="wrap">
+    <h2>Parcours</h2>
+    <ol class="timeline" style="margin-top:24px">
+      <li><div class="d">Mars à sept. 2026</div><h3>Stage de fin d'études R&amp;D, IBDM-CNRS</h3><p>Aix-Marseille Université, Marseille. Chaîne d'acquisition d'images et débruitage par IA.</p></li>
+      <li><div class="d">2026</div><h3>Diplôme d'ingénieur, Polytech Paris-Saclay</h3><p>Électronique et informatique pour l'embarqué, en double diplôme avec le Master Électrique et Télécommunication. Orsay.</p></li>
+      <li><div class="d">Juin 2025 à fév. 2026</div><h3>Stage puis CDD, Télécom Paris</h3><p>Équipe ACES, Palaiseau. Extension OSATE-DIM pour les modèles AADL.</p></li>
+      <li><div class="d">Master 1</div><h3>Génie électrique et télécommunication</h3><p>Université Libanaise, Faculté de Génie III, Beyrouth.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div class="box">
+      <h2>Travaillons ensemble</h2>
+      <p>Je cherche un premier poste d'ingénieur en CDI dans les systèmes embarqués ou l'électronique appliquée à l'IA. Je suis mobile partout en France.</p>
+      <div class="cta" style="margin-top:0">
+        <a class="btn primary" href="mailto:mhmdhjeij9@gmail.com">mhmdhjeij9@gmail.com</a>
+        <a class="btn" href="https://www.linkedin.com/in/mohammad-hojeij-31360a229/" rel="noopener">Mon profil LinkedIn</a>
+        <a class="btn" href="CV_Hojeij.pdf">Télécharger mon CV</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">© 2026 Mohammad Hojeij</div>
+</footer>
+
+<script>
+(function(){
+  var canvas=document.getElementById('scope');
+  var slider=document.getElementById('denoise');
+  if(!canvas||!slider) return;
+  var ctx=canvas.getContext('2d');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W=0,H=0,dpr=1,t=0,level=0;       // level: 1 = bruité, 0 = net
+  var target=1;
+  slider.value=0;
+
+  function css(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim();}
+  function resize(){
+    dpr=window.devicePixelRatio||1;
+    var r=canvas.getBoundingClientRect();
+    W=r.width;H=r.height;
+    canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    draw();
+  }
+  // Bruit déterministe pour éviter le scintillement aléatoire pur
+  function noise(i,k){
+    var x=Math.sin(i*12.9898+k*78.233)*43758.5453;
+    return (x-Math.floor(x))*2-1;
+  }
+  function signal(x){
+    return Math.sin(x*0.020+t*0.8)*0.55+Math.sin(x*0.047+t*1.3)*0.22+Math.sin(x*0.009-t*0.4)*0.12;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    var grid=css('--grid'),trace=css('--trace'),muted=css('--muted');
+    // graticule
+    ctx.strokeStyle=grid;ctx.lineWidth=1;
+    ctx.beginPath();
+    for(var gx=0;gx<=W;gx+=44){ctx.moveTo(gx+.5,0);ctx.lineTo(gx+.5,H);}
+    for(var gy=0;gy<=H;gy+=44){ctx.moveTo(0,gy+.5);ctx.lineTo(W,gy+.5);}
+    ctx.stroke();
+    var mid=H/2,amp=H*0.34;
+    // trace brute en filigrane, visible seulement si bruitée
+    ctx.lineJoin='round';
+    ctx.lineWidth=1.4;
+    ctx.strokeStyle=trace;
+    ctx.globalAlpha=0.28+0.30*level;
+    ctx.beginPath();
+    var frame=Math.floor(t*14);
+    for(var x=0;x<=W;x+=2){
+      var n=noise(x*0.5,frame)*level*0.55+noise(x*0.31,frame+7)*level*0.25;
+      var y=mid-(signal(x)+n)*amp;
+      if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // trace propre, plus nette quand le bruit disparaît
+    ctx.globalAlpha=0.35+0.65*(1-level);
+    ctx.lineWidth=2.6;
+    ctx.beginPath();
+    for(var x2=0;x2<=W;x2+=2){
+      var y2=mid-signal(x2)*amp;
+      if(x2===0)ctx.moveTo(x2,y2);else ctx.lineTo(x2,y2);
+    }
+    ctx.stroke();
+    ctx.globalAlpha=1;
+  }
+  function loop(){
+    t+=0.016;
+    level+=(target-level)*0.12;
+    draw();
+    requestAnimationFrame(loop);
+  }
+  slider.addEventListener('input',function(){
+    target=1-(slider.value/100);
+    if(reduce){level=target;draw();}
+  });
+  window.addEventListener('resize',resize);
+  resize();
+  if(reduce){level=1;draw();}else{level=1;requestAnimationFrame(loop);}
+})();
+</script>
+</body>
+</html>
