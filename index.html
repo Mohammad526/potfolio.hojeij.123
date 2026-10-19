@@ -217,7 +217,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
       <input id="denoise" type="range" min="0" max="100" value="0" aria-describedby="scope-note">
       <span class="end">Brut → Débruité</span>
     </div>
-    <p class="note" id="scope-note">Exemple réel, canal 561 nm : zoom sur une région d'intérêt d'un gastruloïde (cadre orange sur la vignette). Image acquise à faible intensité laser, puis restaurée par le modèle µPiX que j'ai entraîné. Pour qu'elle soit visible, l'image brute est affichée avec un contraste étiré (les valeurs ne sont pas modifiées). Déplace le curseur pour passer de l'image brute à l'image débruitée.</p>
+    <p class="note" id="scope-note">Canal 561 nm : zoom sur une zone d'un gastruloïde (cadre orange sur la vignette). Image acquise à faible intensité laser, puis restaurée par le modèle µPiX. L'image brute est éclaircie pour l'affichage. Déplace le curseur pour comparer.</p>
   </div>
 </div>
 
@@ -272,11 +272,11 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
         <div class="tablewrap">
         <table class="res">
           <caption class="sr">Meilleur modèle retenu pour chaque canal de fluorescence</caption>
-          <thead><tr><th scope="col">Canal</th><th scope="col">Images</th><th scope="col">Batch retenu</th><th scope="col">SSIM</th><th scope="col">Intensité laser minimale validée</th></tr></thead>
+          <thead><tr><th scope="col">Canal</th><th scope="col">Batch retenu</th><th scope="col">SSIM</th><th scope="col">Intensité laser minimale validée</th></tr></thead>
           <tbody>
-            <tr><th scope="row">488 nm</th><td>101</td><td>16</td><td>0,20</td><td>3 %</td></tr>
-            <tr><th scope="row">561 nm</th><td>80</td><td>16</td><td>0,50</td><td>0,7 %</td></tr>
-            <tr><th scope="row">640 nm</th><td>202</td><td>16</td><td>0,64</td><td>0,7 %</td></tr>
+            <tr><th scope="row">488 nm</th><td>16</td><td>0,20</td><td>3 %</td></tr>
+            <tr><th scope="row">561 nm</th><td>16</td><td>0,50</td><td>0,7 %</td></tr>
+            <tr><th scope="row">640 nm</th><td>16</td><td>0,64</td><td>0,7 %</td></tr>
           </tbody>
         </table>
         </div>
