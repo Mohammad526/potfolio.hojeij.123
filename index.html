@@ -72,7 +72,6 @@ nav a:hover{color:var(--ink);background:var(--panel)}
 
 /* Signal scope: l'élément mémorable */
 .scope{margin-top:40px;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.scope canvas{display:block;width:100%;height:220px}
 .scope .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px 18px;border-top:1px solid var(--line)}
 .scope label{font-weight:600;font-size:.95rem}
 .scope input[type=range]{width:100%;accent-color:var(--accent);height:32px}
@@ -138,6 +137,50 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
   html{scroll-behavior:auto}
   .btn:hover{transform:none}
 }
+
+[hidden]{display:none!important}
+/* Comparaison brut / débruité (canal 561 nm) */
+.cmp{background:#000;display:flex;justify-content:center;width:100%;overflow:hidden}
+.cmp .stage{position:relative;height:clamp(240px,70vw,480px);aspect-ratio:1/1;max-width:100%;overflow:hidden}
+.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.cmp .pred{clip-path:inset(0 calc(100% - var(--v,0%)) 0 0)}
+.cmp .bar{position:absolute;top:0;bottom:0;left:var(--v,0%);width:2px;background:var(--accent);transform:translateX(-1px);pointer-events:none}
+.cmp .tag{position:absolute;top:10px;padding:3px 10px;border-radius:999px;font-size:.8rem;font-weight:600;background:rgba(0,0,0,.6);color:#fff}
+.cmp .ov{position:absolute;left:10px;bottom:10px;width:clamp(56px,16%,96px);height:auto;inset:auto auto 10px 10px;object-fit:fill;border:1px solid rgba(255,255,255,.5);border-radius:4px}
+.cmp .tag.l{left:10px}.cmp .tag.r{right:10px}
+.proj .links{margin:12px 0 0;display:flex;flex-wrap:wrap;gap:8px 18px}
+.proj .links a{color:var(--trace);font-weight:600}
+.res.mini{max-width:560px}
+/* Stage : détail */
+.proj>div{min-width:0}
+.flow{overflow-x:auto}
+.flow svg{min-width:600px}
+.proj details,.proj p,.proj li{overflow-wrap:anywhere}
+.proj .lede{font-size:1.06rem}
+.proj h4{font-family:"Bricolage Grotesque","Public Sans",sans-serif;font-size:1.12rem;margin:22px 0 8px}
+.flow{margin:18px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 12px 10px}
+.flow svg{display:block;width:100%;height:auto}
+.flow figcaption{color:var(--muted);font-size:.9rem;padding:6px 8px 4px;max-width:70ch}
+.flow .zone{fill:none;stroke:var(--line);stroke-width:1.5;stroke-dasharray:5 5}
+.flow .zl{fill:var(--muted);font-size:13px;font-weight:600}
+.flow .box{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+.flow .box.hot{stroke:var(--trace);stroke-width:2}
+.flow .bt{fill:var(--ink);font-size:14px}
+.flow .bh{font-weight:700}
+.flow .arr{fill:none;stroke:var(--trace);stroke-width:2}
+.flow .ahead{fill:var(--trace)}
+.flow .al{fill:var(--muted);font-size:13px}
+.plain{margin:0;padding-left:1.2em;max-width:68ch}
+.plain li{margin:6px 0}
+.note-hon{margin-top:12px;color:var(--muted);font-size:.95rem;border-left:3px solid var(--accent);padding-left:12px}
+.tablewrap{overflow-x:auto;max-width:100%}
+.res{border-collapse:collapse;width:100%;max-width:640px;background:var(--panel);border:1px solid var(--line);font-size:.95rem}
+.res th,.res td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left}
+.res thead th{color:var(--muted);font-weight:600;font-size:.85rem}
+.res tbody th{font-weight:700}
+.res td:nth-child(n+2){font-variant-numeric:tabular-nums}
+.small{color:var(--muted);font-size:.92rem;max-width:68ch;margin-top:10px}
+.sr{position:absolute;left:-9999px}
 </style>
 </head>
 <body>
@@ -168,13 +211,13 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
   </div>
 
   <div class="scope">
-    <canvas id="scope" role="img" aria-label="Illustration : un signal bruité qui devient net quand on déplace le curseur vers Débruité."></canvas>
+    <div class="cmp" id="cmp" role="img" aria-label="Comparaison avant et après débruitage, canal 561 nm. Le curseur révèle l'image restaurée."><div class="stage"><img id="cmp-low" src="img/561_low.png" alt="Région du canal 561 nm acquise à faible intensité laser, image brute et bruitée"><img id="cmp-pred" class="pred" src="img/561_pred.png" alt="Même région restaurée par le modèle µPiX"><span class="bar"></span><span class="tag l">Débruité</span><span class="tag r">Brut</span><img class="ov" src="img/561_overview.png" alt="Image complète avec la région agrandie encadrée"></div></div>
     <div class="ctrl">
-      <label for="denoise">Signal</label>
+      <label for="denoise">Image</label>
       <input id="denoise" type="range" min="0" max="100" value="0" aria-describedby="scope-note">
       <span class="end">Brut → Débruité</span>
     </div>
-    <p class="note" id="scope-note">Illustration. Sur les images de microscopie de mon stage, une faible intensité laser préserve les cellules mais donne un signal bruité. J'ai adapté un modèle GAN pour restaurer l'image. Déplace le curseur pour voir l'effet.</p>
+    <p class="note" id="scope-note">Exemple réel, canal 561 nm : zoom sur une région d'intérêt d'un gastruloïde (cadre orange sur la vignette). Image acquise à faible intensité laser, puis restaurée par le modèle µPiX que j'ai entraîné. Pour qu'elle soit visible, l'image brute est affichée avec un contraste étiré (les valeurs ne sont pas modifiées). Déplace le curseur pour passer de l'image brute à l'image débruitée.</p>
   </div>
 </div>
 
@@ -186,20 +229,87 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
     <article class="proj feature">
       <div class="when"><strong>Mars à sept. 2026</strong>Stage de fin d'études, IBDM-CNRS / Aix-Marseille Université</div>
       <div>
-        <h3>Microscopie intelligente : acquisition d'images et débruitage par IA</h3>
-        <p>Mise en place d'une chaîne d'acquisition d'images en microscopie confocale et ajustement fin du modèle μPiX (architecture GAN) pour débruiter des images prises à faible intensité laser, afin de limiter les dommages causés aux cellules.</p>
+        <h3>Microscopie intelligente : débruiter des images de cellules vivantes avec l'IA</h3>
+        <p class="lede">En microscopie confocale, un laser fort donne une belle image mais abîme les cellules vivantes (phototoxicité). Un laser faible les protège, mais l'image est noyée dans le bruit. Ma mission : acquérir avec un laser faible, puis restaurer l'image automatiquement, sans ralentir le travail des biologistes.</p>
+
+        <figure class="flow">
+          <svg viewBox="0 0 780 250" role="img" aria-labelledby="flow-t flow-d">
+            <title id="flow-t">Architecture client-serveur du protocole</title>
+            <desc id="flow-d">Le microscope acquiert une image à faible intensité laser. Une macro IronPython dans ZEN Blue l'envoie en TCP/IP à une station Linux avec GPU. Le serveur convertit CZI en TIF et lance le modèle µPiX. L'image débruitée revient dans ZEN Blue, dans la même fenêtre.</desc>
+            <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="ahead"/></marker></defs>
+            <rect x="8" y="34" width="382" height="136" rx="12" class="zone"/>
+            <rect x="402" y="34" width="370" height="136" rx="12" class="zone"/>
+            <text x="20" y="24" class="zl">PC du microscope · ZEN Blue</text>
+            <text x="414" y="24" class="zl">Station Linux · GPU</text>
+            <rect x="20" y="60" width="165" height="90" rx="10" class="box"/>
+            <text class="bt" x="102" y="94" text-anchor="middle"><tspan x="102" dy="0" class="bh">Acquisition</tspan><tspan x="102" dy="20">confocale, laser</tspan><tspan x="102" dy="20">faible (bruitée)</tspan></text>
+            <rect x="205" y="60" width="165" height="90" rx="10" class="box"/>
+            <text class="bt" x="287" y="94" text-anchor="middle"><tspan x="287" dy="0" class="bh">Client IronPython</tspan><tspan x="287" dy="20">macro + boîte de</tspan><tspan x="287" dy="20">dialogue</tspan></text>
+            <rect x="414" y="60" width="165" height="90" rx="10" class="box"/>
+            <text class="bt" x="496" y="94" text-anchor="middle"><tspan x="496" dy="0" class="bh">Serveur Python</tspan><tspan x="496" dy="20">reçoit le CZI,</tspan><tspan x="496" dy="20">convertit en TIF</tspan></text>
+            <rect x="594" y="60" width="165" height="90" rx="10" class="box hot"/>
+            <text class="bt" x="676" y="94" text-anchor="middle"><tspan x="676" dy="0" class="bh">µPiX (GAN)</tspan><tspan x="676" dy="20">modèle en VRAM,</tspan><tspan x="676" dy="20">prédiction</tspan></text>
+            <path d="M185 105 H205" class="arr" marker-end="url(#ar)"/>
+            <path d="M370 105 H414" class="arr" marker-end="url(#ar)"/>
+            <text x="392" y="94" text-anchor="middle" class="al">TCP/IP</text>
+            <path d="M579 105 H594" class="arr" marker-end="url(#ar)"/>
+            <path d="M676 150 V196 H287 V152" class="arr ret" marker-end="url(#ar)"/>
+            <text x="481" y="216" text-anchor="middle" class="al">image débruitée, ouverte dans la même fenêtre que l'originale</text>
+          </svg>
+          <figcaption>Pourquoi deux machines : le PC qui pilote le microscope n'a pas les ressources pour faire tourner le modèle en parallèle de l'acquisition.</figcaption>
+        </figure>
+
+        <h4>Ce que j'ai construit</h4>
+        <ul class="plain">
+          <li><strong>Un protocole de bout en bout.</strong> Dans ZEN Blue, le biologiste clique sur RUN, choisit « manuel » ou « automatique », puis une image déjà ouverte ou une nouvelle acquisition. L'image part au serveur, revient débruitée et s'ouvre à côté de l'originale pour comparer.</li>
+          <li><strong>Le client</strong> : une macro IronPython dans ZEN Blue (module OAD). <strong>Le serveur</strong> : Python sur une station Linux avec GPU, qui convertit CZI vers TIF, lance la prédiction et renvoie le résultat.</li>
+          <li><strong>Les données d'entraînement</strong> : cinq jours d'acquisitions sur de vrais gastruloïdes (objectif 20×, 3 canaux de fluorescence), avec l'équipe de biologistes. Pour chaque région, une image de référence (Ground Truth) puis plusieurs images dégradées (Low) à intensité laser décroissante.</li>
+          <li><strong>3 modèles µPiX</strong>, un par longueur d'onde (488, 561 et 640 nm), car les détecteurs du microscope (PMT et Airyscan) n'ont pas le même bruit.</li>
+        </ul>
+        <p class="note-hon">Le modèle µPiX (Pix2Pix, générateur U-Net, discriminateur PatchGAN) existait déjà dans l'institut. Mon travail : le comprendre, préparer les jeux de données, l'entraîner et le valider sur ces échantillons, puis l'intégrer au microscope.</p>
+
+        <h4>Résultats</h4>
+        <div class="tablewrap">
+        <table class="res">
+          <caption class="sr">Meilleur modèle retenu pour chaque canal de fluorescence</caption>
+          <thead><tr><th scope="col">Canal</th><th scope="col">Images</th><th scope="col">Batch retenu</th><th scope="col">SSIM</th><th scope="col">Intensité laser minimale validée</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">488 nm</th><td>101</td><td>16</td><td>0,20</td><td>3 %</td></tr>
+            <tr><th scope="row">561 nm</th><td>80</td><td>16</td><td>0,50</td><td>0,7 %</td></tr>
+            <tr><th scope="row">640 nm</th><td>202</td><td>16</td><td>0,64</td><td>0,7 %</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="small">Pour chaque canal, j'ai balayé l'intensité laser vers le bas jusqu'à trouver la limite sous laquelle l'image restaurée n'est plus exploitable. Le seuil a été jugé à l'œil par trois personnes, puis complété par des mesures de SNR. Le SSIM du canal 488 nm reste modeste, mais la structure est bien restaurée visuellement : le SSIM est très sensible aux petits déplacements du gastruloïde vivant entre deux acquisitions.</p>
+
         <details>
-          <summary>Missions et résultats</summary>
+          <summary>Un échec instructif : les billes de polystyrène</summary>
+          <p>Avant les gastruloïdes, j'ai fait mes premiers essais sur des billes de polystyrène. Pour créer les images dégradées, je faisais varier le laser et le gain pour garder la même intensité moyenne que la référence. Résultat : les prédictions saturaient toutes. Le modèle avait appris une règle fausse, « pour ressembler à la référence, il faut éclaircir », parce que mes images Low n'étaient pas vraiment plus sombres que la référence, seulement plus bruitées.</p>
+          <p>J'ai changé de stratégie : une seule région, un laser qui descend progressivement sans compenser par le gain, en 8 bits, sur une plage de 10 à 65 %. Plus de saturation. Leçon retenue : en apprentissage supervisé, la construction du jeu de données compte autant que le modèle.</p>
+        </details>
+
+        <details>
+          <summary>Optimisation : du chargement du modèle à la reconstruction des tuiles</summary>
           <ul>
-            <li>Programme d'automatisation de l'acquisition et de la communication.</li>
-            <li>Architecture client-serveur TCP/IP entre le logiciel de microscopie et une station de traitement GPU, avec conversion des fichiers et prédictions automatisées.</li>
-            <li>Optimisation de l'inférence sur GPU (modèle gardé en mémoire) pour réduire le temps entre deux acquisitions.</li>
-            <li>3 modèles GAN entraînés et validés, un par canal de fluorescence, avec validation multi-métriques (SSIM, MSE, SNR).</li>
-            <li>Seuils d'intensité laser exploitables déterminés expérimentalement et validés avec des experts biologistes.</li>
-            <li>Protocole de bout en bout testé et validé en local avant déploiement sur l'application réelle.</li>
+            <li>Un traitement prenait 30 à 40 secondes pour une acquisition simple, ce qui freinait l'usage en direct. Une partie venait du rechargement du modèle à chaque image.</li>
+            <li>Le serveur garde maintenant le modèle en mémoire GPU (cache global, préchauffage par une prédiction à vide, allocation progressive de la VRAM avec <em>memory growth</em>).</li>
+            <li>Les images sont découpées en tuiles de 256 × 256 pixels avec recouvrement de 64. Normaliser chaque tuile séparément créait des écarts visibles aux frontières. J'ai calculé les percentiles 1 % et 99 % sur toute l'image : les transitions sont devenues homogènes.</li>
+            <li>Limite assumée : le gain de temps exact reste à mesurer proprement, en séparant premier chargement, préchauffage et prédictions suivantes.</li>
           </ul>
         </details>
-        <ul class="tags"><li>Python</li><li>GAN</li><li>TCP/IP</li><li>GPU</li><li>ZEISS CD7 / LSM</li><li>ZEN API</li></ul>
+
+        <details>
+          <summary>Limites et suite du projet</summary>
+          <ul>
+            <li>Le réglage laser/gain reste manuel : la boucle n'est pas encore fermée. L'étape suivante serait un pilotage automatique de l'acquisition à partir de l'analyse de l'image.</li>
+            <li>Les seuils sont validés sur un nombre limité d'échantillons. Il faudrait les confirmer sur davantage de gastruloïdes.</li>
+            <li>Le SNR seul ne suffit pas pour juger le débruitage : je l'ai toujours interprété avec le SSIM et l'inspection visuelle.</li>
+          </ul>
+        </details>
+
+        <p class="links"><a href="https://drive.google.com/drive/folders/1gd4Ube9tT2wIH2FqAs_TmsmQjSJvnMA-?usp=sharing" target="_blank" rel="noopener">Résultats complémentaires du stage (Google Drive)</a></p>
+
+        <ul class="tags"><li>Python</li><li>IronPython</li><li>TensorFlow / Keras</li><li>GAN (Pix2Pix)</li><li>TCP/IP</li><li>GPU / VRAM</li><li>ZEISS CD7 / ZEN Blue</li><li>SSIM, MSE, SNR</li></ul>
       </div>
     </article>
 
@@ -252,6 +362,25 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
             <li>Bug 3 : connexions générées en double.</li>
             <li>Suivi du code sur GitLab (branches, issues, documentation) et collaboration avec l'équipe de recherche.</li>
           </ul>
+        </details>
+
+        <details>
+          <summary>Modifications apportées au code</summary>
+          <ul>
+            <li><strong>Désinstanciation des composants.</strong> Avant, seuls les composants <em>data</em> étaient traités. Ma version gère aussi <em>bus</em> et <em>abstract</em>, retrouve le type et l'implémentation à partir du nom (nom qualifié <code>Pkg::Nom.impl</code>, implémentation locale ou type seul), réutilise les classifieurs existants au lieu de les recréer, et relie toujours l'implémentation à un type sans propriétés.</li>
+            <li><strong>Création des features.</strong> La direction (in/out) est gérée en un seul endroit pour les ports data et event data. Les accès data et bus retrouvent leur type de base et leur nature (requires/provides), copiée depuis la déclaration ou déduite de la direction. Pour un type d'un autre paquetage, l'import est ajouté automatiquement.</li>
+          </ul>
+          <div class="tablewrap">
+          <table class="res mini">
+            <caption class="sr">Cas de test avant et après correction</caption>
+            <thead><tr><th scope="col">Cas de test</th><th scope="col">Premier essai</th><th scope="col">Version finale</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Ports et accès data (9 cas)</th><td>0,5 / 8</td><td>8 / 9 (le 9e dépend du paquetage externe)</td></tr>
+              <tr><th scope="row">Accès bus (8 cas)</th><td>4 / 8</td><td>4 / 8 (les 4 autres dépendent du paquetage externe)</td></tr>
+            </tbody>
+          </table>
+          </div>
+          <p class="small">Point resté ouvert : pour un type défini dans un autre paquetage, le classifieur de la feature instanciée est toujours nul, donc le type ne peut pas être retrouvé. J'ai proposé des pistes (résoudre les proxys EMF, lire le classifieur depuis la feature déclarative) mais le correctif n'est pas finalisé.</p>
         </details>
         <ul class="tags"><li>Java</li><li>Xtend</li><li>EMF</li><li>Eclipse PDE</li><li>AADL / OSATE</li><li>ROS</li><li>GitLab</li></ul>
       </div>
@@ -341,7 +470,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
   <div class="wrap">
     <h2>Parcours</h2>
     <ol class="timeline" style="margin-top:24px">
-      <li><div class="d">Mars à sept. 2026</div><h3>Stage de fin d'études R&amp;D, IBDM-CNRS</h3><p>Aix-Marseille Université, Marseille. Chaîne d'acquisition d'images et débruitage par IA.</p></li>
+      <li><div class="d">Mars à sept. 2026</div><h3>Stage de fin d'études R&amp;D, IBDM-CNRS</h3><p>Aix-Marseille Université, Marseille. Protocole de microscopie intelligente : client-serveur TCP/IP, 3 modèles GAN, optimisation GPU.</p></li>
       <li><div class="d">2026</div><h3>Diplôme d'ingénieur, Polytech Paris-Saclay</h3><p>Électronique et informatique pour l'embarqué, en double diplôme avec le Master Électrique et Télécommunication. Orsay.</p></li>
       <li><div class="d">Juin 2025 à fév. 2026</div><h3>Stage puis CDD, Télécom Paris</h3><p>Équipe ACES, Palaiseau. Extension OSATE-DIM pour les modèles AADL.</p></li>
       <li><div class="d">Master 1</div><h3>Génie électrique et télécommunication</h3><p>Université Libanaise, Faculté de Génie III, Beyrouth.</p></li>
@@ -352,7 +481,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
 <section id="contact" class="contact">
   <div class="wrap">
     <div class="box">
-      <h2>Travaillons ensemble</h2>
+      <h2>Vous cherchez un ingénieur au double profil embarqué et IA ?</h2>
       <p>Je cherche un premier poste d'ingénieur en CDI dans les systèmes embarqués ou l'électronique appliquée à l'IA. Je suis mobile partout en France.</p>
       <div class="cta" style="margin-top:0">
         <a class="btn primary" href="mailto:mhmdhjeij9@gmail.com">mhmdhjeij9@gmail.com</a>
@@ -371,79 +500,11 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
 
 <script>
 (function(){
-  var canvas=document.getElementById('scope');
-  var slider=document.getElementById('denoise');
-  if(!canvas||!slider) return;
-  var ctx=canvas.getContext('2d');
-  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var W=0,H=0,dpr=1,t=0,level=0;       // level: 1 = bruité, 0 = net
-  var target=1;
-  slider.value=0;
-
-  function css(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim();}
-  function resize(){
-    dpr=window.devicePixelRatio||1;
-    var r=canvas.getBoundingClientRect();
-    W=r.width;H=r.height;
-    canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    draw();
-  }
-  // Bruit déterministe pour éviter le scintillement aléatoire pur
-  function noise(i,k){
-    var x=Math.sin(i*12.9898+k*78.233)*43758.5453;
-    return (x-Math.floor(x))*2-1;
-  }
-  function signal(x){
-    return Math.sin(x*0.020+t*0.8)*0.55+Math.sin(x*0.047+t*1.3)*0.22+Math.sin(x*0.009-t*0.4)*0.12;
-  }
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    var grid=css('--grid'),trace=css('--trace'),muted=css('--muted');
-    // graticule
-    ctx.strokeStyle=grid;ctx.lineWidth=1;
-    ctx.beginPath();
-    for(var gx=0;gx<=W;gx+=44){ctx.moveTo(gx+.5,0);ctx.lineTo(gx+.5,H);}
-    for(var gy=0;gy<=H;gy+=44){ctx.moveTo(0,gy+.5);ctx.lineTo(W,gy+.5);}
-    ctx.stroke();
-    var mid=H/2,amp=H*0.34;
-    // trace brute en filigrane, visible seulement si bruitée
-    ctx.lineJoin='round';
-    ctx.lineWidth=1.4;
-    ctx.strokeStyle=trace;
-    ctx.globalAlpha=0.28+0.30*level;
-    ctx.beginPath();
-    var frame=Math.floor(t*14);
-    for(var x=0;x<=W;x+=2){
-      var n=noise(x*0.5,frame)*level*0.55+noise(x*0.31,frame+7)*level*0.25;
-      var y=mid-(signal(x)+n)*amp;
-      if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-    // trace propre, plus nette quand le bruit disparaît
-    ctx.globalAlpha=0.35+0.65*(1-level);
-    ctx.lineWidth=2.6;
-    ctx.beginPath();
-    for(var x2=0;x2<=W;x2+=2){
-      var y2=mid-signal(x2)*amp;
-      if(x2===0)ctx.moveTo(x2,y2);else ctx.lineTo(x2,y2);
-    }
-    ctx.stroke();
-    ctx.globalAlpha=1;
-  }
-  function loop(){
-    t+=0.016;
-    level+=(target-level)*0.12;
-    draw();
-    requestAnimationFrame(loop);
-  }
-  slider.addEventListener('input',function(){
-    target=1-(slider.value/100);
-    if(reduce){level=target;draw();}
-  });
-  window.addEventListener('resize',resize);
-  resize();
-  if(reduce){level=1;draw();}else{level=1;requestAnimationFrame(loop);}
+  var cmp=document.getElementById('cmp'),slider=document.getElementById('denoise');
+  if(!cmp||!slider) return;
+  function upd(){cmp.style.setProperty('--v',slider.value+'%');}
+  slider.addEventListener('input',upd);
+  upd();
 })();
 </script>
 </body>
